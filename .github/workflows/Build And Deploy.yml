@@ -1,6 +1,7 @@
+name: Deploy Project
+on: [push, workflow_dispatch]
 jobs:
   # This job checks out the code and installs dependencies once
-  on: [push, pull-request, workflow_dispatch]
   setup:
     runs-on: ubuntu-latest
     outputs:
