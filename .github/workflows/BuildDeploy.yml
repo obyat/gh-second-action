@@ -1,0 +1,81 @@
+jobs:
+  # This job checks out the code and installs dependencies once
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      node-version: 18
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # Get code from GitHub repo
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Use Node.js v18
+
+      - name: Install Dependencies
+        run: |
+          npm ci  # Install dependencies cleanly
+          echo "✅ All dependencies installed successfully!"
+
+  # Build job runs AFTER setup and builds the project
+  build:
+    needs: setup  # Depends on setup job to finish first
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # Checkout code again for this job
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Build Project
+        run: |
+          npm run build && echo "✅ Build succeeded!" || (echo "❌ Build failed." && exit 1)
+
+  # Lint job runs in parallel with build and test after setup completes
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # Checkout code for lint job
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Lint Project
+        run: |
+          npm run lint && echo "✅ All linting completed successfully!" || (echo "❌ Linting failed." && exit 1)
+
+  # Test job runs in parallel with build and lint after setup completes
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # Checkout code for test job
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Test Project
+        run: |
+          npm run test && echo "✅ Tests succeeded!" || (echo "❌ Tests failed." && exit 1)
+
+  # Deploy job runs Only if all Install, Build, Lint, Test jobs completes
+  deploy:
+    needs: [setup, build, lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: |
+          echo "Deploying..."
+          sleep 5
+          echo "✅ Deploying... succeeded!"
