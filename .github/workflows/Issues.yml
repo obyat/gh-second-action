@@ -1,0 +1,15 @@
+name: Get New Issues
+on:
+  issues:
+jobs:
+  output-issue-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Issue Info
+        run: |
+          echo "Issue Title: ${{ toJSON(github.event.issue.title) }}"
+          echo "Issue Body: ${{ toJSON(github.event.issue.body) }}"
+          echo "Issue URL: ${{ toJSON(github.event.issue.html_url) }}"
+          echo "Issue Author: ${{ toJSON(github.event.issue.user.login) }}"
+          echo "Issue Created At: ${{ toJSON(github.event.issue.created_at) }}"
+          echo "Full Github Event: ${{ toJSON(github.event) }}"
