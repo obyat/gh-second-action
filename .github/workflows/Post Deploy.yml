@@ -1,5 +1,4 @@
 name: Post Deploy Tasks
-
 on:
   workflow_run:
     workflows: ["Build And Deploy"]  # must match the `name:` in your other workflow

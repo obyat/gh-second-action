@@ -1,4 +1,4 @@
-name: Deploy Project
+name: Build And Deploy
 on: [push, workflow_dispatch]
 jobs:
   # This job checks out the code and installs dependencies once
