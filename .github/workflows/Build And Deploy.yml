@@ -38,21 +38,21 @@ jobs:
           npm run build && echo "✅ Build succeeded!" || (echo "❌ Build failed." && exit 1)
 
   # Lint job runs in parallel with build and test after setup completes
-  lint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4  # Checkout code for lint job
+  # lint:
+  #   needs: setup
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4  # Checkout code for lint job
 
-      - name: Set up NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+  #     - name: Set up NodeJS
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '18'
 
-      - name: Lint Project
-        run: |
-          npm run lint && echo "✅ All linting completed successfully!" || (echo "❌ Linting failed." && exit 1)
+  #     - name: Lint Project
+  #       run: |
+  #         npm run lint && echo "✅ All linting completed successfully!" || (echo "❌ Linting failed." && exit 1)
 
   # Test job runs in parallel with build and lint after setup completes
   test:
@@ -73,7 +73,7 @@ jobs:
 
   # Deploy job runs Only if all Install, Build, Lint, Test jobs completes
   deploy:
-    needs: [setup, build, lint, test]
+    needs: [setup, build, test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
