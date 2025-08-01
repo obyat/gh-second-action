@@ -44,17 +44,9 @@ jobs:
           npm run build && echo "✅ Build succeeded!" || (echo "❌ Build failed." && exit 1)
 
   test:
-    needs: install
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
       - name: Test Project
         run: |
           npm test && echo "✅ Tests succeeded!" || (echo "❌ Tests failed." && exit 1)
