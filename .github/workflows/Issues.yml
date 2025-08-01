@@ -1,6 +1,7 @@
 name: Get New Issues
 on:
-  issues:
+  issues: # supported trigger event similar to push and pull_request
+    types: [opened, edited, reopened]
 jobs:
   output-issue-info:
     runs-on: ubuntu-latest
